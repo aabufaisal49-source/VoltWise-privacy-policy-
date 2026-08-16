@@ -1,0 +1,6 @@
+{
+  "name": "Privacy Policy Generator",
+  "description": "Official Privacy Policy and Google Play Store compliance document page for VoltWise (ترشيد) with bilingual export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
