@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { AppConfig } from "../types";
 import { generatePolicyHtml } from "../utils/policyGenerator";
 import {
@@ -7,150 +7,166 @@ import {
   Lock,
   Smartphone,
   Mail,
+  Download,
+  ArrowDown,
+  ArrowUp,
+  Globe,
 } from "lucide-react";
 
 interface CleanPolicyPageViewProps {
   config: AppConfig;
-  onOpenConfig: () => void;
+  onOpenBuilder: () => void;
   onDownloadHtml: () => void;
-  onCopyHtml: () => void;
-  copied: boolean;
 }
 
 export const CleanPolicyPageView: React.FC<CleanPolicyPageViewProps> = ({
   config,
-  onOpenConfig,
+  onOpenBuilder,
   onDownloadHtml,
-  onCopyHtml,
-  copied,
 }) => {
-  const [selectedLang, setSelectedLang] = useState<"ar" | "en" | "bilingual">(
-    config.policyLanguage || "bilingual"
-  );
-
-  const policyHtml = generatePolicyHtml(config, selectedLang);
+  // Always bilingual: Arabic on top, English below
+  const policyHtml = generatePolicyHtml(config, "bilingual");
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const scrollToSection = (sectionId: "arabic-policy" | "english-policy") => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans antialiased">
       {/* Top Header Bar */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs print:hidden">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Brand / App Title */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+          {/* Brand / App Info */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-sm font-bold text-lg">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-xs font-bold text-base">
               ⚡
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight">
-                  ترشيد <span className="text-emerald-600 font-semibold">(VoltWise)</span>
+                  {config.appName}
                 </h1>
-                <span className="hidden sm:inline-block text-[10px] uppercase font-bold tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                  Official Privacy Policy
+                <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  Google Play Certified
                 </span>
               </div>
               <p className="text-xs text-slate-500 hidden sm:block">
-                Google Play Store Compliance &bull; Last Updated: {config.effectiveDate || "2026-08-16"}
+                حزمة التطبيق: <code className="text-[11px] font-mono">{config.packageName}</code> &bull; تاريخ السريان: {config.effectiveDate}
               </p>
             </div>
           </div>
 
-          {/* Language Switcher */}
-          <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-semibold">
-            <button
-              onClick={() => setSelectedLang("ar")}
-              className={`px-3 py-1.5 rounded-md transition-all ${
-                selectedLang === "ar"
-                  ? "bg-white text-slate-900 shadow-xs font-bold"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              🇸🇦 العربية
-            </button>
-            <button
-              onClick={() => setSelectedLang("en")}
-              className={`px-3 py-1.5 rounded-md transition-all ${
-                selectedLang === "en"
-                  ? "bg-white text-slate-900 shadow-xs font-bold"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              🇬🇧 English
-            </button>
-            <button
-              onClick={() => setSelectedLang("bilingual")}
-              className={`px-3 py-1.5 rounded-md transition-all hidden md:block ${
-                selectedLang === "bilingual"
-                  ? "bg-white text-slate-900 shadow-xs font-bold"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              🌐 ثنائي اللغة
-            </button>
-          </div>
+          {/* Bilingual Quick Navigation & Actions */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Quick Language Jump Controls */}
+            <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-semibold">
+              <button
+                onClick={() => scrollToSection("arabic-policy")}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-800 hover:bg-white hover:shadow-xs transition-all"
+                title="الانتقال إلى النسخة العربية في أعلى الصفحة"
+              >
+                <span>🇸🇦 العربية</span>
+                <ArrowUp className="w-3 h-3 text-emerald-600" />
+              </button>
+              <span className="text-slate-300 font-normal">|</span>
+              <button
+                onClick={() => scrollToSection("english-policy")}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-800 hover:bg-white hover:shadow-xs transition-all"
+                title="Jump to the English version below"
+              >
+                <span>🇬🇧 English</span>
+                <ArrowDown className="w-3 h-3 text-blue-600" />
+              </button>
+            </div>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2">
+            {/* Print / Save PDF Button */}
             <button
               onClick={handlePrint}
-              className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors shadow-2xs"
+              className="flex items-center gap-1.5 text-xs font-medium text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors shadow-2xs"
               title="طباعة أو تصدير كـ PDF"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>PDF / طباعة</span>
+              <span className="hidden md:inline">PDF / طباعة</span>
+            </button>
+
+            {/* Download HTML Button */}
+            <button
+              onClick={onDownloadHtml}
+              className="flex items-center gap-1.5 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 px-3 py-1.5 rounded-lg transition-colors shadow-2xs"
+              title="تحميل ملف HTML مستقل ثنائي اللغة"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">تحميل HTML</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main Document Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Compliance & Trust Summary Card */}
-        <div className="mb-8 bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs print:hidden">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                <Lock className="w-4 h-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900">تخزين محلي آمن (Room DB)</h4>
-                <p className="text-[11px] text-slate-600 mt-0.5">
-                  جميع بيانات الفواتير والأجهزة مخزنة على جهازك فقط دون خوادم سحابية.
-                </p>
-              </div>
-            </div>
+        {/* Bilingual Status Notice */}
+        <div className="mb-6 flex items-center justify-between p-3.5 rounded-xl bg-slate-100/90 border border-slate-200 text-xs text-slate-700 print:hidden">
+          <div className="flex items-center gap-2">
+            <Globe className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span className="font-bold text-slate-900">
+              وثيقة سياسة خصوصية ثنائية اللغة معتمدة:
+            </span>
+            <span className="hidden sm:inline text-slate-600">
+              النسخة العربية في الأعلى، تليها النسخة الإنجليزية بالأسفل لمتطلبات متجر Google Play.
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0 text-[11px] font-semibold text-slate-500">
+            <span>Bilingual Document</span>
+          </div>
+        </div>
 
-            <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-                <Smartphone className="w-4 h-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900">أذونات محددة بدقة</h4>
-                <p className="text-[11px] text-slate-600 mt-0.5">
-                  استخدام الكاميرا حصرياً لمسح الملصقات والفواتير (OCR) دون حفظ الصور.
-                </p>
-              </div>
+        {/* Highlight Trust Badges */}
+        <div className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs print:hidden">
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+              <Lock className="w-4 h-4" />
             </div>
+            <div>
+              <h4 className="text-xs font-bold text-slate-900">تخزين محلي آمن (Room DB)</h4>
+              <p className="text-[11px] text-slate-600 mt-0.5">
+                بيانات الاستهلاك والفواتير مخزنة على هاتفك فقط دون أي خوادم خارجية.
+              </p>
+            </div>
+          </div>
 
-            <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900">متوافق مع Google Play</h4>
-                <p className="text-[11px] text-slate-600 mt-0.5">
-                  حذف كامل وسهل للبيانات بضغطة زر أو إعادة تعيين التطبيق.
-                </p>
-              </div>
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+              <Smartphone className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-slate-900">أذونات محددة بدقة</h4>
+              <p className="text-[11px] text-slate-600 mt-0.5">
+                استخدام الكاميرا لمسح ملصقات الطاقة والفواتير دون حفظ الصور سحابياً.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-slate-900">متوافق مع متجر Google Play</h4>
+              <p className="text-[11px] text-slate-600 mt-0.5">
+                جاهز تماماً لقسم أمان البيانات (Data Safety) وإرشادات الخصوصية الصارمة.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Clean Paper Document */}
+        {/* The Paper Document */}
         <article className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-12 shadow-sm">
           <div
             className="prose prose-slate max-w-none
@@ -172,7 +188,7 @@ export const CleanPolicyPageView: React.FC<CleanPolicyPageViewProps> = ({
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-slate-400" />
               <span>
-                للتواصل والاستفسارات:{" "}
+                للتواصل والاستفسارات / Contact:{" "}
                 <a
                   href={`mailto:${config.contactEmail || "aabufaisal49@gmail.com"}`}
                   className="text-emerald-600 font-semibold underline"
@@ -183,23 +199,24 @@ export const CleanPolicyPageView: React.FC<CleanPolicyPageViewProps> = ({
             </div>
 
             <div className="text-[11px] text-slate-400">
-              تطبيق ترشيد (VoltWise) &bull; جميع الحقوق محفوظة {new Date().getFullYear()}
+              {config.appName} &bull; جميع الحقوق محفوظة {new Date().getFullYear()} &bull; All Rights Reserved
             </div>
           </div>
         </article>
-
-
       </main>
 
       {/* Footer */}
       <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 print:hidden mt-12">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>
-            📄 سياسة الخصوصية الرسمية لتطبيق <strong>ترشيد (VoltWise)</strong> على Google Play Store
+            📄 هذه الصفحة هي الوثيقة الرسمية المعتمدة لسياسة خصوصية تطبيق {config.appName} لمتجر Google Play Store (ثنائية اللغة دائماً).
           </p>
-          <p className="text-slate-400 text-[11px]">
-            تاريخ السريان: {config.effectiveDate || "16 أغسطس 2026"}
-          </p>
+          <button
+            onClick={onOpenBuilder}
+            className="text-slate-400 hover:text-slate-700 text-[11px] font-medium transition-colors"
+          >
+            تعديل بنود السياسة (Builder Mode)
+          </button>
         </div>
       </footer>
     </div>

@@ -32,7 +32,9 @@ import {
 export default function App() {
   const [config, setConfig] = useState<AppConfig>(() => {
     try {
-      const saved = localStorage.getItem("playguard_privacy_config");
+      const saved =
+        localStorage.getItem("playguard_voltwise_config") ||
+        localStorage.getItem("playguard_privacy_config");
       if (saved) {
         return { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
       }
@@ -42,7 +44,7 @@ export default function App() {
     return DEFAULT_CONFIG;
   });
 
-  // Default to clean public view for instant clean Vercel deployment
+  // Default to clean public view for Vercel deployment
   const [viewMode, setViewMode] = useState<"public" | "builder">("public");
 
   const [activeTab, setActiveTab] = useState<
@@ -54,10 +56,10 @@ export default function App() {
   const [isDeployGuideOpen, setIsDeployGuideOpen] = useState(false);
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null);
 
-  // Save to localStorage
+  // Persist configuration
   useEffect(() => {
     try {
-      localStorage.setItem("playguard_privacy_config", JSON.stringify(config));
+      localStorage.setItem("playguard_voltwise_config", JSON.stringify(config));
     } catch (e) {
       console.warn("Failed to persist config", e);
     }
@@ -88,7 +90,7 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "index.html";
+    link.download = "voltwise-privacy-policy.html";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -103,15 +105,13 @@ export default function App() {
     setAuditResult(null);
   };
 
-  // If in clean public mode, show the official, dedicated Privacy Policy website
+  // If in clean public mode, show the official, clean website ready for Vercel & Play Store
   if (viewMode === "public") {
     return (
       <CleanPolicyPageView
         config={config}
-        onOpenConfig={() => setViewMode("builder")}
+        onOpenBuilder={() => setViewMode("builder")}
         onDownloadHtml={handleDownloadHtml}
-        onCopyHtml={handleCopyHtml}
-        copied={copied}
       />
     );
   }
@@ -138,10 +138,10 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#888888]">Target App</span>
-              <span className="font-semibold text-white bg-white/5 px-2.5 py-1 rounded-sm border border-white/10 text-xs">
-                {config.appName || "ترشيد (VoltWise)"}
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#888888]">
+                Target App
               </span>
+              <span className="text-white font-semibold">{config.appName}</span>
               <span className="text-white/20">&bull;</span>
               <span className="text-[#888888] font-mono text-[11px] bg-[#0A0A0A] px-2 py-0.5 rounded-sm border border-white/5">
                 {config.packageName}
@@ -152,7 +152,7 @@ export default function App() {
               </span>
             </div>
             <p className="text-[11px] text-[#666666]">
-              Generating clean standard HTML output compliant with Google Play Store User Data &amp; Families policies.
+              Generating clean standard legal and privacy documents compliant with Google Play Store policies.
             </p>
           </div>
 
@@ -185,7 +185,7 @@ export default function App() {
       </section>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:px-8">
         {activeTab === "configure" && (
           <AppConfigForm
             config={config}
@@ -233,7 +233,7 @@ export default function App() {
             PlayGuard &bull; Professional Android &amp; Google Play Policy Engine
           </div>
           <div className="text-[11px] text-[#666666]">
-            Built with standard semantic HTML tags (<code className="text-[#888888]">&lt;h1&gt;</code>, <code className="text-[#888888]">&lt;h2&gt;</code>, <code className="text-[#888888]">&lt;p&gt;</code>, <code className="text-[#888888]">&lt;ul&gt;</code>) for instant Vercel deployment.
+            Active Profile: <strong className="text-white">{config.appName}</strong> &bull; All changes saved in local persistence.
           </div>
         </div>
       </footer>
