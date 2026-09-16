@@ -220,13 +220,13 @@ export function generateBilingualPolicyHtml(config: AppConfig): string {
   html += `      <span>🌐</span>\n`;
   html += `      <span>Official English Translation Follows Below &bull; الترجمة الإنجليزية بالأسفل</span>\n`;
   html += `    </div>\n`;
-  html += `    <p class="text-xs text-slate-500 max-w-lg">This English translation is provided for official compliance with Google Play Store developer policy and international users.</p>\n`;
+  html += `    <p class="text-xs text-slate-500 max-w-lg">This English translation is provided for official compliance with international developer policies and users.</p>\n`;
   html += `  </div>\n\n`;
   html += `  <!-- 2. English Version Section (Below / أسفل الصفحة) -->\n`;
   html += `  <section id="english-policy" class="bg-white rounded-xl">\n`;
   html += `    <div class="mb-5 inline-flex items-center gap-2 bg-blue-50 text-blue-800 border border-blue-200 px-3.5 py-1.5 rounded-full text-xs font-bold" dir="ltr">\n`;
   html += `      <span>🇬🇧</span>\n`;
-  html += `      <span>Official English Version (Google Play Store Compliance)</span>\n`;
+  html += `      <span>Official English Version (International Compliance)</span>\n`;
   html += `    </div>\n`;
   html += generateEnglishPolicyHtml(config);
   html += `  </section>\n`;

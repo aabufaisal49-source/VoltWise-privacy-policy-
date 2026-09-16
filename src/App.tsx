@@ -108,11 +108,7 @@ export default function App() {
   // If in clean public mode, show the official, clean website ready for Vercel & Play Store
   if (viewMode === "public") {
     return (
-      <CleanPolicyPageView
-        config={config}
-        onOpenBuilder={() => setViewMode("builder")}
-        onDownloadHtml={handleDownloadHtml}
-      />
+      <CleanPolicyPageView config={config} />
     );
   }
 
