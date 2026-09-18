@@ -12,9 +12,9 @@ export const DEFAULT_CONFIG: AppConfig = {
   appType: "Utility & Tools",
   developerName: "إدارة تطبيق ترشيد (VoltWise Team)",
   contactEmail: "aabufaisal49@gmail.com",
-  supportWebsite: "",
+  supportWebsite: "https://volt-wise-privacy-policy.vercel.app/",
   developerAddress: "",
-  effectiveDate: "2026-08-16",
+  effectiveDate: "18 سبتمبر 2026",
 
   // Data Collection
   personalDataCollected: [],

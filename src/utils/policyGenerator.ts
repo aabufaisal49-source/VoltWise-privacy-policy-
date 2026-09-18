@@ -14,192 +14,304 @@ export function generatePolicyHtml(config: AppConfig, languageOverride?: "en" | 
 }
 
 export function generateArabicPolicyHtml(config: AppConfig): string {
-  const effectiveDateStr = config.effectiveDate || "2026-08-16";
+  const effectiveDateStr = "18 سبتمبر 2026";
+  const lastUpdatedStr = "سبتمبر 2026";
   const appName = config.appName || "ترشيد (VoltWise)";
-  const devName = config.developerName || "إدارة تطبيق ترشيد (VoltWise Team)";
   const contactEmail = config.contactEmail || "aabufaisal49@gmail.com";
+  const privacyUrl = config.supportWebsite || "https://volt-wise-privacy-policy.vercel.app/";
 
   let html = "";
-  html += `<div dir="rtl" class="policy-arabic space-y-6 text-right" style="direction: rtl; text-align: right;">\n`;
-  html += `  <div class="border-b-2 border-black pb-4 mb-6">\n`;
-  html += `    <h1 class="text-2xl sm:text-3xl font-bold text-black mb-2">📄 سياسة الخصوصية لتطبيق ${escapeHtml(appName)}</h1>\n`;
-  html += `    <div class="flex flex-wrap gap-4 text-xs font-semibold text-neutral-600">\n`;
-  html += `      <p><strong>تاريخ السريان:</strong> ${escapeHtml(effectiveDateStr)}</p>\n`;
-  html += `      <p><strong>آخر تحديث:</strong> ${escapeHtml(effectiveDateStr)}</p>\n`;
+  html += `<div dir="rtl" class="policy-arabic space-y-7 text-right break-normal [word-break:keep-all] [overflow-wrap:break-word] [hyphens:none]" style="direction: rtl; text-align: right; word-break: keep-all; overflow-wrap: break-word; hyphens: none; -webkit-hyphens: none;">\n`;
+  
+  // Header / Title & Dates
+  html += `  <div class="border-b-2 border-slate-900 pb-5 mb-6">\n`;
+  html += `    <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-950 tracking-normal leading-snug mb-3 [word-break:keep-all]">سياسة الخصوصية لتطبيق ${escapeHtml(appName)}</h1>\n`;
+  html += `    <div class="flex flex-wrap gap-2.5 sm:gap-4 text-xs font-semibold text-slate-600">\n`;
+  html += `      <span class="bg-slate-100 px-3 py-1 rounded-md border border-slate-200 whitespace-nowrap"><strong>تاريخ السريان:</strong> ${effectiveDateStr}</span>\n`;
+  html += `      <span class="bg-slate-100 px-3 py-1 rounded-md border border-slate-200 whitespace-nowrap"><strong>آخر تحديث:</strong> ${lastUpdatedStr}</span>\n`;
   html += `    </div>\n`;
   html += `  </div>\n\n`;
 
-  html += `  <p class="text-xs sm:text-sm leading-relaxed text-neutral-800 font-medium bg-neutral-50 p-4 rounded-md border border-neutral-200">\n`;
-  html += `    تلتزم ${escapeHtml(devName)} بحماية خصوصية المستخدمين وضمان أمان بياناتهم. توضح هذه الوثيقة ماهية البيانات التي يتعامل معها التطبيق، وكيفية معالجتها، ولماذا نطلب أذونات معينة على جهازك.\n`;
-  html += `  </p>\n\n`;
+  // Introduction
+  html += `  <div class="text-xs sm:text-sm leading-relaxed text-slate-800 bg-slate-50/90 p-4 sm:p-5 rounded-xl border border-slate-200 space-y-2">\n`;
+  html += `    <p>أهلاً بكم في تطبيق <strong>${escapeHtml(appName)}</strong>، الأداة المتخصصة في تدقيق وإدارة استهلاك الطاقة الكهربائية ومسح فواتير الكهرباء والتعرف على كفاءة الأجهزة المنزلية.</p>\n`;
+  html += `    <p>نحن نضع خصوصيتك وأمان بياناتك في قمة أولوياتنا، ونلتزم التزاماً تاماً بالشفافية حول كيفية التعامل مع المعلومات والصلاحيات التي يطلبها التطبيق.</p>\n`;
+  html += `  </div>\n\n`;
 
-  let sectionNum = 1;
+  // Section 1
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2 flex items-center gap-2">\n`;
+  html += `      <span>1. مبدأ التخزين المحلي (Offline-First Local Storage)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2.5 text-xs sm:text-sm text-slate-700 pr-1 leading-relaxed">\n`;
+  html += `      <li><strong>تخزين محلي 100%:</strong> تُخزَّن جميع بياناتك المتعلقة بسجلات فواتير الكهرباء، وتفاصيل الأجهزة المنزلية، وحسابات الطاقة، ومخصصات الاستهلاك محلياً داخل ذاكرة جهازك فقط عبر قاعدة بيانات محلية مشفرة وآمنة (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">Android Room Database</code>).</li>\n`;
+  html += `      <li><strong>لا توجد خوادم تخزين خارجية:</strong> نحن لا نقوم بإنشاء حسابات مستخدمين، ولا نملك خوادم سحابية لتخزين أو تتبع فواتيرك، ولا نقوم بجمع أو بيع أو مشاركة بيانات استهلاكك مع أي طرف ثالث على الإطلاق.</li>\n`;
+  html += `      <li><strong>التحكم الكامل ببياناتك:</strong> يمكنك في أي وقت ومن خلال شاشة الإعدادات داخل التطبيق تصدير بياناتك أو حذفها بالكامل وبشكل فوري ونهائي من جهازك.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 1: App Info
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. معلومات عن التطبيق</h2>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-neutral-700 pr-2">\n`;
-  html += `    <li><strong>اسم التطبيق:</strong> ${escapeHtml(appName)}</li>\n`;
-  html += `    <li><strong>طبيعة التطبيق:</strong> أداة ذكية لإدارة الطاقة، وتدقيق استهلاك الأجهزة المنزلية، وتحليل فواتير الكهرباء والمياه.</li>\n`;
-  html += `  </ul>\n\n`;
+  // Section 2
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>2. الصلاحيات المطلوبة والغرض منها (Device Permissions)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 mb-2">يطلب التطبيق فقط الحد الأدنى الضروري من الصلاحيات لأداء وظائفه الأساسية وفق سياسات Google Play:</p>\n`;
+  html += `    <div class="space-y-3.5 pr-1 text-xs sm:text-sm text-slate-700 leading-relaxed">\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">1. صلاحية الكاميرا (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">CAMERA</code>):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 mr-3 text-slate-700">\n`;
+  html += `          <li><strong>الغرض:</strong> تفعيل المعاينة الحية المباشرة (Live Viewfinder عبر CameraX) لالتقاط صور فواتير الكهرباء وملصقات كفاءة الطاقة للأجهزة المنزلية بوضوح وسرعة.</li>\n`;
+  html += `          <li><strong>الاستخدام:</strong> تُستخدم الكاميرا فقط عند فتحك لشاشات المسح الضوئي، مع توفير أزرار تحكم مباشرة (الفلاش والتبديل بين الكاميرات). لا يتم تسجيل أي فيديو أو تشغيل الكاميرا في الخلفية.</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
 
-  // Section 2: Local Data & Privacy
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. جمع واستخدام البيانات والخصوصية المحلية (Local Data & Privacy)</h2>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2.5 text-xs sm:text-sm text-neutral-700 pr-2">\n`;
-  html += `    <li><strong>التخزين المحلي الآمن:</strong> يتم تخزين جميع بيانات الأجهزة المنزلية، وحسابات الاستهلاك، وسجلات الفواتير التي يدخلها المستخدم محلياً على ذاكرة الجهاز باستخدام قاعدة بيانات آمنة (Room Database).</li>\n`;
-  html += `    <li><strong>عدم مشاركة البيانات الشخصية:</strong> نحن لا نجمع ولا نشارك ولا نبيع أي بيانات شخصية، أو بيانات فواتيرك، أو استهلاكك مع أي جهات أو خوادم خارجية.</li>\n`;
-  html += `    <li><strong>معالجة الصور والمسح الضوئي (OCR):</strong> عند مسح ملصقات كفاءة الطاقة أو الفواتير عبر الكاميرا، تتم معالجة الصور واستخراج النصوص داخل التطبيق دون حفظ صورك الشخصية في أي خوادم سحابية خارجية مجهولة.</li>\n`;
-  html += `  </ul>\n\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">2. معرض الصور والمستندات (Photo Picker / File Storage):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 mr-3 text-slate-700">\n`;
+  html += `          <li><strong>الغرض:</strong> تمكينك من رفع صور الفواتير أو ملفات فواتير الكهرباء بصيغة PDF المخزنة على هاتفك لتحليلها.</li>\n`;
+  html += `          <li><strong>الأمان:</strong> نعتمد تقنية منتقي الصور الآمن (Android Photo Picker) الذي يضمن قراءة الملف المحدد فقط دون الوصول إلى باقي ملفات أو صور جهازك.</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
 
-  // Section 3: Permissions
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. أذونات وصلاحيات الجهاز المستخدمة (Device Permissions)</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 mb-3">يطلب التطبيق بعض الأذونات الأساسية فقط لتقديم الوظائف المطلوبة:</p>\n`;
-  html += `  <ul class="list-disc list-inside space-y-3 text-xs sm:text-sm text-neutral-700 pr-2">\n`;
-  html += `    <li>\n`;
-  html += `      <strong>الكاميرا (<code>android.permission.CAMERA</code>):</strong><br>\n`;
-  html += `      <span class="mr-4 text-neutral-600"><strong>الغرض:</strong> تُستخدم الكاميرا حصرياً لمسح ملصقات كفاءة الطاقة للأجهزة وقراءة بيانات الفواتير وعدادات الكهرباء بشكل ذكي وفوري. لا يتم استخدامها لأي غرض آخر أو في الخلفية.</span>\n`;
-  html += `    </li>\n`;
-  html += `    <li>\n`;
-  html += `      <strong>الإنترنت والشبكة (<code>android.permission.INTERNET</code> &amp; <code>android.permission.ACCESS_NETWORK_STATE</code>):</strong><br>\n`;
-  html += `      <span class="mr-4 text-neutral-600"><strong>الغرض:</strong> التحقق من الاتصال وتحديث شرائح التعرفة الجمركية والكهربائية بصورة دورية، بالإضافة إلى متطلبات تشغيل واجهات النظام الأساسية.</span>\n`;
-  html += `    </li>\n`;
-  html += `    <li>\n`;
-  html += `      <strong>الاهتزاز (<code>android.permission.VIBRATE</code>):</strong><br>\n`;
-  html += `      <span class="mr-4 text-neutral-600"><strong>الغرض:</strong> تقديم استجابة لمسية (Haptic Feedback) تفاعلية ومريحة أثناء استخدام التطبيق وعند إتمام العمليات بنجاح.</span>\n`;
-  html += `    </li>\n`;
-  html += `  </ul>\n\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">3. صلاحية الإنترنت (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">INTERNET</code> &amp; <code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">ACCESS_NETWORK_STATE</code>):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 mr-3 text-slate-700">\n`;
+  html += `          <li><strong>الغرض:</strong> إجراء الاتصال المشفر الآمن بواجهة الذكاء الاصطناعي (Google Gemini AI) لاستخراج نصوص وأرقام الفاتورة، وجلب التحديثات الرسمية لشرائح وتعريفات الكهرباء في منطقتك (السعودية، سلطنة عُمان، الإمارات، إلخ).</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
 
-  // Section 4: Third-Party Services
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. خدمات الأطراف الثالثة (Third-Party Services)</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 mb-2">يعتمد التطبيق على بنية تحتية برمجية قياسية لضمان استقرار التطبيق وأمانه:</p>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-neutral-700 pr-2">\n`;
-  html += `    <li><strong>Google Play Services:</strong> لضمان الأمان وتقديم التحديثات وتوافق بيئة التشغيل.</li>\n`;
-  html += `  </ul>\n\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">4. صلاحية الاهتزاز (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">VIBRATE</code>):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 mr-3 text-slate-700">\n`;
+  html += `          <li><strong>الغرض:</strong> تقديم استجابة لمسية (Haptic Feedback) تفاعلية عند التقاط الصورة أو اكتمال الفحص لتأكيد العملية للمستخدم.</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
+  html += `    </div>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 5: Children's Privacy
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. الفئة العمرية وحماية خصوصية الأطفال (Children's Privacy)</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed">\n`;
-  html += `    تطبيق "${escapeHtml(appName)}" موجه للجمهور العام والأسر (الفئة العمرية +13). التطبيق لا يستهدف ولا يجمع عمداً أي معلومات تعريفية شخصية من الأطفال دون سن 13 عاماً.\n`;
-  html += `  </p>\n\n`;
+  // Section 3
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>3. معالجة الذكاء الاصطناعي والصور (AI &amp; Cloud Processing)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2.5 text-xs sm:text-sm text-slate-700 pr-1 leading-relaxed">\n`;
+  html += `      <li><strong>المعالجة العابرة فقط (Transient Processing):</strong> عند التقاط صورة للفاتورة أو ملصق كفاءة الطاقة، يتم إرسال الصورة عبر اتصال مشفر (HTTPS/TLS) إلى واجهة البرمجة الرسمية <strong>Google Gemini API</strong> لتحليل النص واستخراج قراءات العداد والمبالغ وتفاصيل الاستهلاك.</li>\n`;
+  html += `      <li><strong>عدم حفظ الصور:</strong> تتم معالجة الصور واستخراج البيانات لحظياً ودون الاحتفاظ بها في خوادم خارجية أو استخدامها في تدريب نماذج الذكاء الاصطناعي أو ربطها بهويتك.</li>\n`;
+  html += `      <li><strong>حفظ النتائج محلياً:</strong> تعود النتائج المحللة إلى جهازك مباشرة لتُحفظ في قاعدة البيانات المحلية بهاتفك، وتُحذف الصورة المؤقتة فوراً.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 6: Data Deletion & Rights
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. حقوق المستخدم والتحكم في البيانات (Data Deletion)</h2>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-neutral-700 pr-2">\n`;
-  html += `    <li>للمستخدم كامل الحرية في حذف أي فاتورة أو جهاز مضاف بنقرة زر واحدة من داخل التطبيق.</li>\n`;
-  html += `    <li>عند رغبة المستخدم في حذف جميع البيانات، يمكنه ببساطة استخدام خيار <strong>"إعادة تعيين التطبيق"</strong> من صفحة الإعدادات أو مسح بيانات التطبيق وإلغاء تثبيته، وسيتم حذف جميع السجلات من جهازه نهائياً وفوراً دون بقاء أي نسخة احتياطية.</li>\n`;
-  html += `  </ul>\n\n`;
+  // Section 4
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>4. خدمات الأطراف الثالثة (Third-Party Services)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-2">يعتمد التطبيق على مكتبات وخدمات تقنية معتمدة من Google لضمان أعلى مستويات الأداء والأمان:</p>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-700 pr-1 leading-relaxed">\n`;
+  html += `      <li><strong>Google Play Services:</strong> لضمان سلامة تشغيل بيئة أندرويد.</li>\n`;
+  html += `      <li><strong>Google Gemini API:</strong> لمعالجة الرؤية الحاسوبية واستخراج نصوص الفواتير بدقة.</li>\n`;
+  html += `      <li>تخضع هذه الخدمات لسياسات خصوصية شركة Google الرسمية: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-emerald-600 underline font-semibold">سياسة خصوصية Google</a>.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 7: Changes & Last Updated
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. التغييرات على سياسة الخصوصية وآخر تحديث</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed mb-2">\n`;
-  html += `    <strong>تاريخ آخر مراجعة:</strong> ${escapeHtml(effectiveDateStr)}\n`;
-  html += `  </p>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed">\n`;
-  html += `    قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر لتعكس أي تحسينات في ميزات التطبيق. يُنصح بمراجعة هذه الصفحة بشكل دوري. استمرارك في استخدام التطبيق بعد نشر أي تعديل يُعتبر موافقة وقبولاً للبنود المحدثة.\n`;
-  html += `  </p>\n\n`;
+  // Section 5
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>5. خصوصية الأطفال (Children's Privacy)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">\n`;
+  html += `      تطبيق <strong>${escapeHtml(appName)}</strong> مخصص للجمهور العام والأفراد المهتمين بإدارة استهلاك الطاقة المنزلية (+13 عاماً). لا نجمع أو نطلب عن قصد أي معلومات أو بيانات شخصية من الأطفال.\n`;
+  html += `    </p>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 8: Contact Us
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. التواصل معنا (Contact Information)</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 mb-2">إذا كانت لديك أي أسئلة أو استفسارات حول سياسة الخصوصية هذه، يمكنك التواصل معنا عبر البريد الإلكتروني:</p>\n`;
-  html += `  <ul class="list-disc list-inside space-y-1.5 text-xs sm:text-sm text-neutral-700 pr-2">\n`;
-  html += `    <li><strong>📧 البريد الإلكتروني:</strong> <a href="mailto:${escapeHtml(contactEmail)}" class="text-blue-600 underline font-semibold">${escapeHtml(contactEmail)}</a></li>\n`;
-  html += `  </ul>\n`;
+  // Section 6
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>6. الأمان وحماية البيانات (Data Security)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-700 pr-1 leading-relaxed">\n`;
+  html += `      <li>جميع الاتصالات الشبكية مشفرة بأحدث بروتوكولات التشفير القياسية (SSL/TLS).</li>\n`;
+  html += `      <li>البيانات المخزنة محلياً محمية بواسطة نظام العزل والتشفير القياسي المدمج في نظام التشغيل Android.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
+
+  // Section 7
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>7. التعديلات على سياسة الخصوصية</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">\n`;
+  html += `      قد نقوم بتحديث سياسة الخصوصية من وقت لآخر لمواكبة التحديثات البرمجية أو المتطلبات القانونية. سيتم نشر أي تعديلات على هذه الصفحة مع تحديث "تاريخ السريان" في الأعلى، وسيكون ذلك متاحاً دائماً للمعاينة من داخل إعدادات التطبيق.\n`;
+  html += `    </p>\n`;
+  html += `  </section>\n\n`;
+
+  // Section 8
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>8. التواصل والاستفسارات (Contact Us)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-2">\n`;
+  html += `      إذا كانت لديك أي استفسارات أو ملاحظات بخصوص سياسة الخصوصية أو إدارة بياناتك، يسعدنا تواصلك معنا:\n`;
+  html += `    </p>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-700 pr-1">\n`;
+  html += `      <li><strong>اسم التطبيق:</strong> ${escapeHtml(appName)}</li>\n`;
+  html += `      <li><strong>البريد الإلكتروني:</strong> <a href="mailto:${escapeHtml(contactEmail)}" class="text-emerald-600 font-semibold underline break-all">${escapeHtml(contactEmail)}</a></li>\n`;
+  html += `      <li><strong>الموقع الإلكتروني لسياسة الخصوصية:</strong> <a href="${escapeHtml(privacyUrl)}" target="_blank" rel="noopener noreferrer" class="text-emerald-600 font-semibold underline break-all">${escapeHtml(privacyUrl)}</a></li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n`;
+
   html += `</div>\n`;
-
   return html;
 }
 
 export function generateEnglishPolicyHtml(config: AppConfig): string {
-  const effectiveDateStr = config.effectiveDate || "August 16, 2026";
+  const effectiveDateStr = "September 18, 2026";
+  const lastUpdatedStr = "September 2026";
   const appName = config.appName || "VoltWise (ترشيد)";
-  const devName = config.developerName || "VoltWise Team";
   const contactEmail = config.contactEmail || "aabufaisal49@gmail.com";
+  const privacyUrl = config.supportWebsite || "https://volt-wise-privacy-policy.vercel.app/";
 
   let html = "";
-  html += `<div class="policy-english space-y-6 text-left" style="direction: ltr; text-align: left;">\n`;
-  html += `  <div class="border-b-2 border-black pb-4 mb-6">\n`;
-  html += `    <h1 class="text-2xl sm:text-3xl font-bold text-black mb-2">📄 Privacy Policy for ${escapeHtml(appName)}</h1>\n`;
-  html += `    <div class="flex flex-wrap gap-4 text-xs font-semibold text-neutral-600">\n`;
-  html += `      <p><strong>Effective Date:</strong> ${escapeHtml(effectiveDateStr)}</p>\n`;
-  html += `      <p><strong>Last Updated:</strong> ${escapeHtml(effectiveDateStr)}</p>\n`;
+  html += `<div class="policy-english space-y-7 text-left" style="direction: ltr; text-align: left;">\n`;
+  
+  // Header / Title & Dates
+  html += `  <div class="border-b-2 border-slate-900 pb-5 mb-6">\n`;
+  html += `    <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-950 tracking-normal leading-snug mb-3">Privacy Policy for ${escapeHtml(appName)}</h1>\n`;
+  html += `    <div class="flex flex-wrap gap-2.5 sm:gap-4 text-xs font-semibold text-slate-600">\n`;
+  html += `      <span class="bg-slate-100 px-3 py-1 rounded-md border border-slate-200 whitespace-nowrap"><strong>Effective Date:</strong> ${effectiveDateStr}</span>\n`;
+  html += `      <span class="bg-slate-100 px-3 py-1 rounded-md border border-slate-200 whitespace-nowrap"><strong>Last Updated:</strong> ${lastUpdatedStr}</span>\n`;
   html += `    </div>\n`;
   html += `  </div>\n\n`;
 
-  html += `  <p class="text-xs sm:text-sm leading-relaxed text-neutral-800 font-medium bg-neutral-50 p-4 rounded-md border border-neutral-200">\n`;
-  html += `    <strong>${escapeHtml(appName)}</strong> is committed to protecting your privacy and ensuring data security. This Privacy Policy outlines what information the app processes, how it is handled, and why specific device permissions are requested.\n`;
-  html += `  </p>\n\n`;
+  // Introduction
+  html += `  <div class="text-xs sm:text-sm leading-relaxed text-slate-800 bg-slate-50/90 p-4 sm:p-5 rounded-xl border border-slate-200 space-y-2">\n`;
+  html += `    <p>Welcome to <strong>${escapeHtml(appName)}</strong>, the specialized tool for auditing and managing electrical energy consumption, scanning electricity bills, and evaluating household appliance efficiency.</p>\n`;
+  html += `    <p>We place your privacy and data security at the very top of our priorities, and we are fully committed to complete transparency regarding how information and requested device permissions are handled by the application.</p>\n`;
+  html += `  </div>\n\n`;
 
-  let sectionNum = 1;
+  // Section 1
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2 flex items-center gap-2">\n`;
+  html += `      <span>1. Offline-First Local Storage Principle</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2.5 text-xs sm:text-sm text-slate-700 pl-1 leading-relaxed">\n`;
+  html += `      <li><strong>100% Local Storage:</strong> All your data regarding electricity bill records, household appliance specifications, power calculations, and consumption allocations are stored locally inside your device’s memory via a secure and encrypted local database (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">Android Room Database</code>).</li>\n`;
+  html += `      <li><strong>No External Storage Servers:</strong> We do not create user accounts, maintain cloud servers to store or track your bills, nor do we collect, sell, or share your consumption metrics with any third parties whatsoever.</li>\n`;
+  html += `      <li><strong>Full Control Over Your Data:</strong> You can at any time, directly through the in-app Settings screen, export your data or delete it entirely, immediately, and permanently from your device.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 1: App Info
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. App Information</h2>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-neutral-700 pl-2">\n`;
-  html += `    <li><strong>App Name:</strong> ${escapeHtml(appName)}</li>\n`;
-  html += `    <li><strong>App Nature:</strong> Smart energy management, home appliance power auditing, and utility bill tracking utility.</li>\n`;
-  html += `  </ul>\n\n`;
+  // Section 2
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>2. Required Device Permissions &amp; Purposes (Device Permissions)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 mb-2">The application requests only the minimum necessary permissions required to perform its core functions in compliance with Google Play policies:</p>\n`;
+  html += `    <div class="space-y-3.5 pl-1 text-xs sm:text-sm text-slate-700 leading-relaxed">\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">1. Camera Permission (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">CAMERA</code>):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 ml-3 text-slate-700">\n`;
+  html += `          <li><strong>Purpose:</strong> Enables live viewfinder preview (via CameraX) to quickly and clearly capture photos of electricity bills and appliance energy efficiency labels.</li>\n`;
+  html += `          <li><strong>Usage:</strong> The camera is accessed strictly when you navigate to scanning screens, offering direct controls (flash toggle and camera switching). No video is ever recorded, and the camera is never operated in the background.</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
 
-  // Section 2: Data Collection & Local Processing
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. Data Collection and Local Processing (Local Data & Privacy)</h2>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2.5 text-xs sm:text-sm text-neutral-700 pl-2">\n`;
-  html += `    <li><strong>Local Storage:</strong> All appliance specifications, power consumption logs, and utility bills entered by the user are stored locally and securely on your device using an internal database (Room Database).</li>\n`;
-  html += `    <li><strong>No Data Selling or Sharing:</strong> We do not collect, share, or sell your personal consumption metrics, bills, or home audit data with third parties or external servers.</li>\n`;
-  html += `    <li><strong>Image Processing &amp; OCR:</strong> When scanning energy rating labels or bills, images are processed directly within the app workflow to extract text parameters. No user photos are uploaded or stored externally.</li>\n`;
-  html += `  </ul>\n\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">2. Photo Picker &amp; Document Storage (Photo Picker / File Storage):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 ml-3 text-slate-700">\n`;
+  html += `          <li><strong>Purpose:</strong> Enables you to upload bill photos or PDF electricity bill documents stored on your phone for analysis.</li>\n`;
+  html += `          <li><strong>Security:</strong> We utilize the secure Android Photo Picker, ensuring the app only reads the specific file you select without accessing your broader photos or storage files.</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
 
-  // Section 3: Device Permissions Used
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. Device Permissions Used</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 mb-3">${escapeHtml(appName)} requests minimal permissions strictly necessary for its functionality:</p>\n`;
-  html += `  <ul class="list-disc list-inside space-y-3 text-xs sm:text-sm text-neutral-700 pl-2">\n`;
-  html += `    <li>\n`;
-  html += `      <strong>Camera (<code>android.permission.CAMERA</code>):</strong><br>\n`;
-  html += `      <span class="ml-4 text-neutral-600"><strong>Purpose:</strong> Used exclusively for scanning appliance energy efficiency tags, utility bills, and meter readings. It is never used in the background or for any secondary purpose.</span>\n`;
-  html += `    </li>\n`;
-  html += `    <li>\n`;
-  html += `      <strong>Internet &amp; Network (<code>android.permission.INTERNET</code> &amp; <code>android.permission.ACCESS_NETWORK_STATE</code>):</strong><br>\n`;
-  html += `      <span class="ml-4 text-neutral-600"><strong>Purpose:</strong> Required for general network verification and periodically fetching standard tariff tier updates.</span>\n`;
-  html += `    </li>\n`;
-  html += `    <li>\n`;
-  html += `      <strong>Vibration (<code>android.permission.VIBRATE</code>):</strong><br>\n`;
-  html += `      <span class="ml-4 text-neutral-600"><strong>Purpose:</strong> Provides haptic feedback during interactive user actions and successful completion of tasks.</span>\n`;
-  html += `    </li>\n`;
-  html += `  </ul>\n\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">3. Internet &amp; Network Connectivity (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">INTERNET</code> &amp; <code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">ACCESS_NETWORK_STATE</code>):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 ml-3 text-slate-700">\n`;
+  html += `          <li><strong>Purpose:</strong> Establishes a secure, encrypted connection to Google Gemini AI to extract bill text and numerical figures, and fetches official updates for electricity tariff tiers and utility rates in your region (Saudi Arabia, Oman, UAE, etc.).</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
 
-  // Section 4: Third-Party Services
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. Third-Party Services</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 mb-2">The app relies on standard Google and Android infrastructure for stability and security:</p>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-neutral-700 pl-2">\n`;
-  html += `    <li><strong>Google Play Services:</strong> For core runtime stability, app security, and distribution integrity.</li>\n`;
-  html += `  </ul>\n\n`;
+  html += `      <div class="bg-slate-50/60 p-3.5 rounded-lg border border-slate-200">\n`;
+  html += `        <p class="font-bold text-slate-900 mb-1">4. Vibration (<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">VIBRATE</code>):</p>\n`;
+  html += `        <ul class="list-disc list-inside space-y-1 ml-3 text-slate-700">\n`;
+  html += `          <li><strong>Purpose:</strong> Delivers interactive haptic feedback when capturing a photo or completing a scan to confirm the action to the user.</li>\n`;
+  html += `        </ul>\n`;
+  html += `      </div>\n`;
+  html += `    </div>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 5: Children's Privacy
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. Children’s Privacy</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed">\n`;
-  html += `    ${escapeHtml(appName)} is intended for a general audience (ages 13 and above). We do not knowingly collect personal identifiable information from children under 13 years of age.\n`;
-  html += `  </p>\n\n`;
+  // Section 3
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>3. AI &amp; Cloud Processing (AI &amp; Image Processing)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2.5 text-xs sm:text-sm text-slate-700 pl-1 leading-relaxed">\n`;
+  html += `      <li><strong>Transient Processing Only:</strong> When you capture a bill or energy efficiency label, the image is transmitted over an encrypted connection (HTTPS/TLS) to the official <strong>Google Gemini API</strong> to analyze text and extract meter readings, amounts, and consumption details.</li>\n`;
+  html += `      <li><strong>No Image Retention:</strong> Images are processed and data is extracted instantaneously without being retained on external servers, used to train AI models, or linked to your personal identity.</li>\n`;
+  html += `      <li><strong>Local Result Storage:</strong> Analyzed results are returned directly to your device and saved into your on-device local database; temporary image files are deleted immediately.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 6: User Data Control & Deletion
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. User Data Control &amp; Deletion</h2>\n`;
-  html += `  <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-neutral-700 pl-2">\n`;
-  html += `    <li>Users can delete any individual bill, device, or record directly within the app interface at any time.</li>\n`;
-  html += `    <li>Users can delete all stored app data at once using the <strong>"Reset Application"</strong> option in Settings or by clearing app data / uninstalling the app from their device, which wipes all local records permanently and instantly.</li>\n`;
-  html += `  </ul>\n\n`;
+  // Section 4
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>4. Third-Party Services</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-2">The application relies on trusted, official Google technical libraries and services to guarantee optimal performance, reliability, and security:</p>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-700 pl-1 leading-relaxed">\n`;
+  html += `      <li><strong>Google Play Services:</strong> To ensure the stability and integrity of the Android runtime environment.</li>\n`;
+  html += `      <li><strong>Google Gemini API:</strong> For computer vision processing and precise utility bill text extraction.</li>\n`;
+  html += `      <li>These services are governed by Google's official privacy policies: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-emerald-600 underline font-semibold">Google Privacy Policy</a>.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 7: Changes to This Privacy Policy & Last Updated
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. Changes to This Privacy Policy &amp; Last Updated</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed mb-2">\n`;
-  html += `    <strong>Date of Last Revision:</strong> ${escapeHtml(effectiveDateStr)}\n`;
-  html += `  </p>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed">\n`;
-  html += `    We may update our Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date. Users are encouraged to review this policy periodically. Continued use of the application following any posted modifications indicates acceptance of the updated policy.\n`;
-  html += `  </p>\n\n`;
+  // Section 5
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>5. Children's Privacy</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">\n`;
+  html += `      <strong>${escapeHtml(appName)}</strong> is intended for a general audience and individuals interested in managing household energy consumption (ages 13 and above). We do not knowingly collect or solicit personal information from children under 13.</li>\n`;
+  html += `    </p>\n`;
+  html += `  </section>\n\n`;
 
-  // Section 8: Contact Us
-  html += `  <h2 class="text-base sm:text-lg font-bold text-black border-b border-neutral-300 pb-2 mt-6">${sectionNum++}. Contact Us</h2>\n`;
-  html += `  <p class="text-xs sm:text-sm text-neutral-700 mb-2">If you have any questions or feedback regarding this Privacy Policy, please reach out to us at:</p>\n`;
-  html += `  <ul class="list-disc list-inside space-y-1.5 text-xs sm:text-sm text-neutral-700 pl-2">\n`;
-  html += `    <li><strong>📧 Email:</strong> <a href="mailto:${escapeHtml(contactEmail)}" class="text-blue-600 underline font-semibold">${escapeHtml(contactEmail)}</a></li>\n`;
-  html += `  </ul>\n`;
+  // Section 6
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>6. Data Security &amp; Protection</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-700 pl-1 leading-relaxed">\n`;
+  html += `      <li>All network communications are encrypted using modern standard encryption protocols (SSL/TLS).</li>\n`;
+  html += `      <li>Data stored locally is shielded and isolated by standard Android sandboxing and system-level encryption mechanisms.</li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n\n`;
+
+  // Section 7
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>7. Changes to This Privacy Policy</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">\n`;
+  html += `      We may update our Privacy Policy from time to time to keep pace with software enhancements or legal requirements. Any modifications will be posted on this page with an updated "Effective Date" at the top, and will always remain available for review within the application settings.\n`;
+  html += `    </p>\n`;
+  html += `  </section>\n\n`;
+
+  // Section 8
+  html += `  <section class="space-y-3">\n`;
+  html += `    <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">\n`;
+  html += `      <span>8. Contact Us &amp; Inquiries (Contact Us)</span>\n`;
+  html += `    </h3>\n`;
+  html += `    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-2">\n`;
+  html += `      If you have any questions or feedback regarding this Privacy Policy or managing your data, please contact us:\n`;
+  html += `    </p>\n`;
+  html += `    <ul class="list-disc list-inside space-y-2 text-xs sm:text-sm text-slate-700 pl-1">\n`;
+  html += `      <li><strong>Application Name:</strong> ${escapeHtml(appName)}</li>\n`;
+  html += `      <li><strong>Email:</strong> <a href="mailto:${escapeHtml(contactEmail)}" class="text-emerald-600 font-semibold underline break-all">${escapeHtml(contactEmail)}</a></li>\n`;
+  html += `      <li><strong>Privacy Policy Website:</strong> <a href="${escapeHtml(privacyUrl)}" target="_blank" rel="noopener noreferrer" class="text-emerald-600 font-semibold underline break-all">${escapeHtml(privacyUrl)}</a></li>\n`;
+  html += `    </ul>\n`;
+  html += `  </section>\n`;
+
   html += `</div>\n`;
-
   return html;
 }
 
@@ -208,26 +320,12 @@ export function generateBilingualPolicyHtml(config: AppConfig): string {
   html += `<div class="bilingual-policy space-y-12">\n`;
   html += `  <!-- 1. Arabic Version Section (Top / أعلى الصفحة) -->\n`;
   html += `  <section id="arabic-policy" class="bg-white rounded-xl">\n`;
-  html += `    <div class="mb-5 inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3.5 py-1.5 rounded-full text-xs font-bold" dir="rtl">\n`;
-  html += `      <span>🇸🇦</span>\n`;
-  html += `      <span>النسخة العربية (الرسمية المعتمدة)</span>\n`;
-  html += `    </div>\n`;
   html += generateArabicPolicyHtml(config);
   html += `  </section>\n\n`;
-  html += `  <!-- Bilingual Separation Banner -->\n`;
-  html += `  <div class="my-12 py-6 border-y-2 border-dashed border-slate-300 flex flex-col items-center justify-center gap-2 text-center bg-slate-50/80 rounded-xl" dir="ltr">\n`;
-  html += `    <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-600">\n`;
-  html += `      <span>🌐</span>\n`;
-  html += `      <span>Official English Translation Follows Below &bull; الترجمة الإنجليزية بالأسفل</span>\n`;
-  html += `    </div>\n`;
-  html += `    <p class="text-xs text-slate-500 max-w-lg">This English translation is provided for official compliance with international developer policies and users.</p>\n`;
-  html += `  </div>\n\n`;
+  html += `  <!-- Divider -->\n`;
+  html += `  <hr class="my-12 sm:my-16 border-t-2 border-slate-200" />\n\n`;
   html += `  <!-- 2. English Version Section (Below / أسفل الصفحة) -->\n`;
-  html += `  <section id="english-policy" class="bg-white rounded-xl">\n`;
-  html += `    <div class="mb-5 inline-flex items-center gap-2 bg-blue-50 text-blue-800 border border-blue-200 px-3.5 py-1.5 rounded-full text-xs font-bold" dir="ltr">\n`;
-  html += `      <span>🇬🇧</span>\n`;
-  html += `      <span>Official English Version (International Compliance)</span>\n`;
-  html += `    </div>\n`;
+  html += `  <section id="english-policy" class="bg-white rounded-xl" dir="ltr">\n`;
   html += generateEnglishPolicyHtml(config);
   html += `  </section>\n`;
   html += `</div>\n`;
@@ -237,7 +335,7 @@ export function generateBilingualPolicyHtml(config: AppConfig): string {
 export function generateCompleteIndexHtml(config: AppConfig): string {
   const bodyContent = generatePolicyHtml(config);
   const appName = escapeHtml(config.appName || "ترشيد (VoltWise)");
-  const effectiveDate = escapeHtml(config.effectiveDate || "2026-08-16");
+  const effectiveDate = escapeHtml(config.effectiveDate || "18 سبتمبر 2026");
 
   return `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -245,7 +343,7 @@ export function generateCompleteIndexHtml(config: AppConfig): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>سياسة الخصوصية - ${appName} | Privacy Policy</title>
-  <meta name="description" content="سياسة الخصوصية لتطبيق ${appName} على متجر Google Play - Privacy Policy for ${appName} Android Application.">
+  <meta name="description" content="وثيقة سياسة الخصوصية المعتمدة لتطبيق ${appName} - Official Privacy Policy for ${appName} Application.">
   <meta name="robots" content="index, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -284,6 +382,16 @@ export function generateCompleteIndexHtml(config: AppConfig): string {
       color: var(--text-main);
       line-height: 1.8;
       padding: 40px 20px;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      hyphens: none;
+      -webkit-hyphens: none;
+    }
+    .policy-arabic {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      hyphens: none;
+      -webkit-hyphens: none;
     }
     .container {
       max-width: 880px;
@@ -293,6 +401,17 @@ export function generateCompleteIndexHtml(config: AppConfig): string {
       border-radius: 16px;
       border: 1px solid var(--border-color);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    @media (max-width: 640px) {
+      body {
+        padding: 20px 12px;
+      }
+      .container {
+        padding: 24px 18px;
+      }
+      h1 {
+        font-size: 1.45rem !important;
+      }
     }
     .lang-switcher {
       display: flex;

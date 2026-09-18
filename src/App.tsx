@@ -36,7 +36,13 @@ export default function App() {
         localStorage.getItem("playguard_voltwise_config") ||
         localStorage.getItem("playguard_privacy_config");
       if (saved) {
-        return { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+        const parsed = JSON.parse(saved);
+        return {
+          ...DEFAULT_CONFIG,
+          ...parsed,
+          effectiveDate: "18 سبتمبر 2026",
+          supportWebsite: "https://volt-wise-privacy-policy.vercel.app/",
+        };
       }
     } catch (e) {
       console.warn("Could not load stored config", e);

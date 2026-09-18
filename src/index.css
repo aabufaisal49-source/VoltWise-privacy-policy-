@@ -2,10 +2,28 @@
 
 @layer base {
   body {
-    background-color: #0a0a0a;
-    color: #d1d1d1;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #0f172a;
+    font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    hyphens: none;
+    -webkit-hyphens: none;
   }
+}
+
+.policy-arabic {
+  font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  hyphens: none;
+  -webkit-hyphens: none;
+}
+
+.policy-english {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .font-serif {
